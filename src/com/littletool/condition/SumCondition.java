@@ -1,4 +1,4 @@
-package condition;
+package com.littletool.condition;
 
 public class SumCondition extends BaseCondition{
 	private static final int MAX_COUNT = 100;

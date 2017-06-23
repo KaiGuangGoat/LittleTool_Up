@@ -1,4 +1,4 @@
-package condition;
+package com.littletool.condition;
 
 public class BaseCondition {
 	public static final String CONDITION_2_DOT_1 = "√{2,}x{1,}√{1}x{1}";
