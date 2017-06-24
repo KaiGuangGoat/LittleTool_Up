@@ -14,4 +14,10 @@ public abstract class SequenceCondition extends BaseCondition{
 			flagPrepareEnter(signal.getEndPosition()-1, signal.getIndex());
 		}
 	}
+	
+	@Override
+	public void sumGoal() {
+		// TODO Auto-generated method stub
+		
+	}
 }

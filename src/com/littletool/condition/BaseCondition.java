@@ -9,11 +9,10 @@ import java.util.regex.Pattern;
 import javax.swing.Box;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 
-import com.littletool.Constant;
 import com.littletool.UI.DataTableModelRender;
 import com.littletool.bean.DataBean;
-import com.littletool.bean.OutputBean;
 import com.littletool.bean.SignalBean;
 
 public abstract class BaseCondition {
@@ -29,6 +28,7 @@ public abstract class BaseCondition {
 	protected List<DataBean> inputDataList;
 	protected List<SignalBean> signalList = new ArrayList<SignalBean>();
 	
+	protected JTextField jtf;
 	
 	public BaseCondition(){
 		
@@ -46,6 +46,7 @@ public abstract class BaseCondition {
 	}
 	
 	public void find(String textData,List<DataBean> inputDataList){
+		sumGoal();
 		this.inputDataList = inputDataList;
 		Pattern p = Pattern.compile(condition);
 		Matcher m = p.matcher(textData);
@@ -91,7 +92,13 @@ public abstract class BaseCondition {
 		boxTableTitle.add(scroll);
 	}
 	
+	public void setJtf(JTextField jtf){
+		this.jtf = jtf;
+	}
+	
 	public abstract void analyse();
 	
 	public abstract String getKey();
+	
+	public abstract void sumGoal();
 }

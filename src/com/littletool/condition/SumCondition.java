@@ -1,6 +1,7 @@
 package com.littletool.condition;
 
 import com.littletool.bean.SignalBean;
+import com.littletool.util.Util;
 
 public abstract class SumCondition extends BaseCondition{
 	
@@ -33,6 +34,19 @@ public abstract class SumCondition extends BaseCondition{
 			}
 			
 			
+		}
+	}
+	
+	@Override
+	public void sumGoal() {
+		String sumGoalStr = jtf.getText().trim();
+		if(Util.stringIsEmpty(sumGoalStr)){
+			return;
+		}
+		try {
+			sumGoal = Integer.valueOf(sumGoalStr);
+		} catch (Exception e) {
+			sumGoal = 5;
 		}
 	}
 	

@@ -141,7 +141,10 @@ public class MainOperationPanel implements ItemListener{
 	private Box sumItemBox(String item){
 		Box box = UIHelper.createBoxH("");
 		box.add(UIHelper.createCheckBox(Constant.SUM+item,item,this));
-		box.add(UIHelper.createJTextField(50,30));
+		JTextField jtf = UIHelper.createJTextField(50,30);
+		jtf.addKeyListener(inputListener);
+		box.add(jtf);
+		ConditionSelector.select(Constant.SUM+item).setJtf(jtf);
 		return box;
 	}
 	
@@ -150,6 +153,7 @@ public class MainOperationPanel implements ItemListener{
 		jtfInputData.setText("");
 		if(!"1".equals(input) && !"-1".equals(input)){
 			System.out.println("非法字符");
+			update();
 			return;
 		}
 		if("1".equals(input)){
@@ -162,7 +166,10 @@ public class MainOperationPanel implements ItemListener{
 			inputDataList.add(dataInstance(-1, Constant.COLOR_NEGATIVE));
 			inputNumList.add(-1);
 		}
-		
+		update();
+	}
+	
+	void update(){
 		boxTableTitle.removeAll();
 		for(BaseCondition condition:conditionList){
 			
@@ -184,14 +191,14 @@ public class MainOperationPanel implements ItemListener{
 		return inputDataListCopy;
 	}
 	
-	void reloadConditionBar(){
-		boxTableTitle.removeAll();
-		for(BaseCondition condition:conditionList){
-			condition.loadData(boxTableTitle);
-		}
-		boxTableTitle.add(UIHelper.createTableScrollPane(new String[]{"时间","备注"}));
-		repain();
-	}
+//	void reloadConditionBar(){
+//		boxTableTitle.removeAll();
+//		for(BaseCondition condition:conditionList){
+//			condition.loadData(boxTableTitle);
+//		}
+//		boxTableTitle.add(UIHelper.createTableScrollPane(new String[]{"时间","备注"}));
+//		repain();
+//	}
 	
 	private void loadTimeComment(){
 		String[] names = {"时间","备注"};
@@ -233,7 +240,7 @@ public class MainOperationPanel implements ItemListener{
 		}else{
 			conditionList.remove(condition);
 		}
-		reloadConditionBar();
+		update();
 		System.out.println("conditionList size:"+conditionList.size());
 	}
 	
