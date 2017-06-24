@@ -12,8 +12,8 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 public class UIHelper {
-	public static JTextField createJTextField(){
-		final JTextField jtf = new JTextField("");
+	public static JTextField createJTextField(String text){
+		final JTextField jtf = new JTextField(text);
 		jtf.setMaximumSize(new Dimension(200,50));
 		return jtf;
 	}

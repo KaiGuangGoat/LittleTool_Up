@@ -37,8 +37,10 @@ public class MainOperationPanel implements ItemListener{
 	private JFrame window;
 	
 	private JTextField jtxEA;
+	private String jtxEAString = "";
 	
 	private JTextField jtxUSD;
+	private String jtxUSDString = "";
 	
 	private Box boxRight;
 	
@@ -112,17 +114,17 @@ public class MainOperationPanel implements ItemListener{
 //		boxLeftParent.add(boxLeft);
 		
 		Box boxEAName = UIHelper.createBox("EA名称");
-		jtxEA = UIHelper.createJTextField();
+		jtxEA = UIHelper.createJTextField(jtxEAString);
 		boxEAName.add(jtxEA);
 		boxLeft.add(boxEAName);
 		
 		Box boxUSD = UIHelper.createBox("货币对");
-		jtxUSD = UIHelper.createJTextField();
+		jtxUSD = UIHelper.createJTextField(jtxUSDString);
 		boxUSD.add(jtxUSD);
 		boxLeft.add(boxUSD);
 		
 		Box box2 = UIHelper.createBox("添加数据");
-		jtfInputData = UIHelper.createJTextField();
+		jtfInputData = UIHelper.createJTextField("");
 		jtfInputData.addKeyListener(inputListener);
 		box2.add(jtfInputData);
 		boxLeft.add(box2);
@@ -216,14 +218,6 @@ public class MainOperationPanel implements ItemListener{
 		return inputDataListCopy;
 	}
 	
-//	void reloadConditionBar(){
-//		boxTableTitle.removeAll();
-//		for(BaseCondition condition:conditionList){
-//			condition.loadData(boxTableTitle);
-//		}
-//		boxTableTitle.add(UIHelper.createTableScrollPane(new String[]{"时间","备注"}));
-//		repain();
-//	}
 	
 	private void loadTimeComment(){
 		String[] names = {"时间","备注"};
@@ -284,23 +278,22 @@ public class MainOperationPanel implements ItemListener{
 		jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		jfc.showDialog(new JLabel(), "选择");
 		File file = jfc.getSelectedFile();
+		String[] fileName = file.getName().split("_");
+		if(fileName.length == 2){
+			jtxEAString = fileName[0];
+			jtxUSDString = fileName[1].replace(".data", "");
+		}
+		
 		List<DataBean> loadDataList = DataDao.load(file);
 		if(loadDataList != null){
 			inputDataList = loadDataList;
 			textData.append(Util.getTextData(inputDataList));
+			
 		}
-//		for(File file:currentParentFile.listFiles()){
-//			if(file.getName().contains(".data")){
-//				inputDataList = DataDao.load(file);
-//				textData.append(Util.getTextData(inputDataList));
-//				System.out.println(textData.toString());
-//				break;
-//			}
-//		}
 	}
 	
 	private String saveFilepath(){
-		String fileName = jtxEA.getText() + jtxUSD.getText();
+		String fileName = jtxEA.getText()+"_" + jtxUSD.getText();
 		if(Util.stringIsEmpty(fileName)){
 			fileName = "EA_EURUSD";
 		}
