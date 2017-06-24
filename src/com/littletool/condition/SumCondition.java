@@ -1,15 +1,10 @@
 package com.littletool.condition;
 
-import java.util.List;
-
-import com.littletool.bean.DataBean;
 import com.littletool.bean.SignalBean;
 
 public abstract class SumCondition extends BaseCondition{
 	
-	public SumCondition(List<DataBean> inputDataList) {
-		super(inputDataList);
-	}
+	
 	protected static final int MAX_COUNT = 100;
 	protected int sumGoal = 5;//设置的求和数
 	

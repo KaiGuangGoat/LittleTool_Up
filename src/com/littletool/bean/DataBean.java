@@ -1,5 +1,6 @@
 package com.littletool.bean;
 
+import java.awt.Color;
 import java.io.Serializable;
 
 /**
@@ -8,7 +9,7 @@ import java.io.Serializable;
  * @date 2017.6.21
  *
  */
-public class DataBean implements Serializable{
+public class DataBean implements Serializable,Cloneable{
 	/**
 	 * 
 	 */
@@ -17,11 +18,20 @@ public class DataBean implements Serializable{
 	private int data;//输入的数据
 	private String inputTime;//输入时间
 	private int position;//属于第几个
-	private String color;
+	private Color color;
 	private boolean isSignalEnd = false;//是否属于信号量的最后一位
 	private boolean isEnterReady = false;//是否准备入场
 	private int positionToSignal;//属于第几个信号量
 	private String comment;//备注
+	@Override
+	public DataBean clone(){
+		try {
+			return (DataBean) super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 	public int getData() {
 		return data;
 	}
@@ -40,10 +50,10 @@ public class DataBean implements Serializable{
 	public void setPosition(int position) {
 		this.position = position;
 	}
-	public String getColor() {
+	public Color getColor() {
 		return color;
 	}
-	public void setColor(String color) {
+	public void setColor(Color color) {
 		this.color = color;
 	}
 	public boolean isSignalEnd() {

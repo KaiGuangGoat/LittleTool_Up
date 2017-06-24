@@ -1,15 +1,18 @@
 package com.littletool.condition.sequeConditionImpl;
 
-import java.util.List;
-
-import com.littletool.bean.DataBean;
+import com.littletool.Constant;
 import com.littletool.condition.SequenceCondition;
 
 public class Sequence3Line1 extends SequenceCondition{
 
-	public Sequence3Line1(List<DataBean> inputDataList) {
-		super(inputDataList);
+	public static final String KEY = Constant.SEQUE+"3-1";
+	
+	public Sequence3Line1() {
 		condition = CONDITION_3_LINE_1;
 	}
-
+	@Override
+	public String getKey() {
+		// TODO Auto-generated method stub
+		return "3-1";
+	}
 }

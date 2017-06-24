@@ -1,14 +1,10 @@
 package com.littletool.condition;
 
-import java.util.List;
-
-import com.littletool.bean.DataBean;
 import com.littletool.bean.SignalBean;
 
 public abstract class SequenceCondition extends BaseCondition{
 
-	public SequenceCondition(List<DataBean> inputDataList) {
-		super(inputDataList);
+	public SequenceCondition() {
 	}
 	
 	@Override
@@ -18,5 +14,4 @@ public abstract class SequenceCondition extends BaseCondition{
 			flagPrepareEnter(signal.getEndPosition()-1, signal.getIndex());
 		}
 	}
-	
 }

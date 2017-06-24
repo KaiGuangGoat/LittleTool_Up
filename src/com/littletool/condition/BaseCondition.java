@@ -1,11 +1,17 @@
 package com.littletool.condition;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.Box;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+
 import com.littletool.Constant;
+import com.littletool.UI.DataTableModelRender;
 import com.littletool.bean.DataBean;
 import com.littletool.bean.OutputBean;
 import com.littletool.bean.SignalBean;
@@ -24,24 +30,23 @@ public abstract class BaseCondition {
 	protected List<SignalBean> signalList = new ArrayList<SignalBean>();
 	
 	
-	public BaseCondition(List<DataBean> inputDataList){
-		this.inputDataList = inputDataList;
+	public BaseCondition(){
+		
 	}
 	
-	public void flagSignal(SignalBean signal){
+	protected void flagSignal(SignalBean signal){
 		int position = signal.getEndPosition()-1;
 		inputDataList.get(position).setSignalEnd(true);
-		inputDataList.get(position).setColor(Constant.COLOR_SIGNAL_END);
 		inputDataList.get(position).setPositionToSignal(signal.getIndex());
 	}
 	
-	public void flagPrepareEnter(int position,int positionToSignal){
+	protected void flagPrepareEnter(int position,int positionToSignal){
 		inputDataList.get(position).setEnterReady(true);
-		inputDataList.get(position).setColor(Constant.COLOR_PREPARE_ENTER);
 		inputDataList.get(position).setPositionToSignal(positionToSignal);
 	}
 	
-	public void find(String textData){
+	public void find(String textData,List<DataBean> inputDataList){
+		this.inputDataList = inputDataList;
 		Pattern p = Pattern.compile(condition);
 		Matcher m = p.matcher(textData);
 		int count = 0;
@@ -51,27 +56,42 @@ public abstract class BaseCondition {
 			signal.setIndex(count);
 			signal.setBeginPosition(m.start());
 			signal.setEndPosition(m.end());
+			for(int i=m.start();i<m.end();i++){
+				this.inputDataList.get(i).setColor(Color.gray);
+			}
 			signalList.add(signal);
 		}
 	}
 	
-	public List<OutputBean> outputResult(){
-		List<OutputBean> dataList = new ArrayList<>();
-		for(DataBean inputData:inputDataList){
-			OutputBean outputData = new OutputBean();
-			outputData.setConditionColumn(inputData);
-			if(inputData.isEnterReady()){
-				outputData.setEnterColumn(inputData);
-			}
-			if(inputData.isSignalEnd()){
-				outputData.setSignalColumn(inputData);
-			}
-			dataList.add(outputData);
-		}
+	public List<DataBean> outputResult(){
+//		List<OutputBean> dataList = new ArrayList<>();
+//		for(DataBean inputData:inputDataList){
+//			OutputBean outputData = new OutputBean();
+//			outputData.setConditionColumn(inputData);
+//			if(inputData.isEnterReady()){
+//				outputData.setEnterColumn(inputData);
+//			}
+//			if(inputData.isSignalEnd()){
+//				outputData.setSignalColumn(inputData);
+//			}
+//			dataList.add(outputData);
+//		}
 		
-		return dataList;
+		return inputDataList;
+	}
+	
+	public void loadData(Box boxTableTitle){
+		
+		String[] names = {getKey(),"信号","入场"};
+		DataTableModelRender modelRender = new DataTableModelRender(outputResult(), names);
+		JTable table = new JTable();
+		table.setModel(modelRender);
+		table.setDefaultRenderer(Object.class, modelRender);
+		JScrollPane scroll = new JScrollPane(table);
+		boxTableTitle.add(scroll);
 	}
 	
 	public abstract void analyse();
 	
+	public abstract String getKey();
 }
