@@ -1,7 +1,11 @@
 package com.littletool.util;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
+import com.littletool.bean.DataBean;
 
 public class Util {
 	
@@ -16,6 +20,24 @@ public class Util {
 			return true;
 		}
 		return false;
+	}
+	
+	public static String getCurrentPath(){
+		File file = new File("");
+		return file.getAbsolutePath();
+	}
+	
+	public static String getTextData(List<DataBean> dataList){
+		StringBuilder textData = new StringBuilder();
+		for(DataBean data:dataList){
+			if(data.getData()==1){
+				textData.append("√");
+			}
+			if(data.getData() == -1){
+				textData.append("x");
+			}
+		}
+		return textData.toString();
 	}
 	
 	public static void main(String[] args) {

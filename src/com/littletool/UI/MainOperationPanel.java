@@ -6,13 +6,19 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -22,6 +28,7 @@ import com.littletool.Constant;
 import com.littletool.bean.DataBean;
 import com.littletool.condition.BaseCondition;
 import com.littletool.condition.ConditionSelector;
+import com.littletool.dao.DataDao;
 import com.littletool.util.UIHelper;
 import com.littletool.util.Util;
 
@@ -29,13 +36,17 @@ public class MainOperationPanel implements ItemListener{
 	
 	private JFrame window;
 	
+	private JTextField jtxEA;
+	
+	private JTextField jtxUSD;
+	
 	private Box boxRight;
 	
 	private Box boxSumCondition;
 	
 	private Box boxSequenceCondition;
 	
-	Box boxTableTitle;
+	private Box boxTableTitle;
 	
 	private JTextField jtfInputData;
 	
@@ -76,13 +87,21 @@ public class MainOperationPanel implements ItemListener{
 		window.setSize(new Dimension(900, 900));
 		window.setLocationRelativeTo(null);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		window.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				super.windowClosed(e);
+				System.out.println("window close");
+				save();
+			}
+		});
 		
 		inputNumList = new ArrayList<>();
 		conditionList = new ArrayList<>();
 		inputDataList = new ArrayList<>();
 		
 		textData = new StringBuilder();
-		
+		load();
 	}
 	
 	public void show(){
@@ -92,9 +111,15 @@ public class MainOperationPanel implements ItemListener{
 		
 //		boxLeftParent.add(boxLeft);
 		
-		Box box1 = UIHelper.createBox("EA名称");
-		box1.add(UIHelper.createJTextField());
-		boxLeft.add(box1);
+		Box boxEAName = UIHelper.createBox("EA名称");
+		jtxEA = UIHelper.createJTextField();
+		boxEAName.add(jtxEA);
+		boxLeft.add(boxEAName);
+		
+		Box boxUSD = UIHelper.createBox("货币对");
+		jtxUSD = UIHelper.createJTextField();
+		boxUSD.add(jtxUSD);
+		boxLeft.add(boxUSD);
 		
 		Box box2 = UIHelper.createBox("添加数据");
 		jtfInputData = UIHelper.createJTextField();
@@ -246,6 +271,41 @@ public class MainOperationPanel implements ItemListener{
 	
 	private void repain(){
 		window.revalidate();
+	}
+	
+	private void save(){
+		DataDao.save(saveFilepath(), inputDataList);
+	}
+	
+	private void load(){
+		File currentParentFile = new File("");
+		System.out.println(currentParentFile.getAbsolutePath());
+		JFileChooser jfc = new JFileChooser(currentParentFile.getAbsolutePath());
+		jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		jfc.showDialog(new JLabel(), "选择");
+		File file = jfc.getSelectedFile();
+		List<DataBean> loadDataList = DataDao.load(file);
+		if(loadDataList != null){
+			inputDataList = loadDataList;
+			textData.append(Util.getTextData(inputDataList));
+		}
+//		for(File file:currentParentFile.listFiles()){
+//			if(file.getName().contains(".data")){
+//				inputDataList = DataDao.load(file);
+//				textData.append(Util.getTextData(inputDataList));
+//				System.out.println(textData.toString());
+//				break;
+//			}
+//		}
+	}
+	
+	private String saveFilepath(){
+		String fileName = jtxEA.getText() + jtxUSD.getText();
+		if(Util.stringIsEmpty(fileName)){
+			fileName = "EA_EURUSD";
+		}
+		
+		return Util.getCurrentPath()+File.separator+fileName+".data";
 	}
 	
 	public static void main(String[] args) {
