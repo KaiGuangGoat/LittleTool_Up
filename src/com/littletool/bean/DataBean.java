@@ -20,6 +20,7 @@ public class DataBean implements Serializable{
 	private String color;
 	private boolean isSignalEnd = false;//是否属于信号量的最后一位
 	private boolean isEnterReady = false;//是否准备入场
+	private int positionToSignal;//属于第几个信号量
 	private String comment;//备注
 	public int getData() {
 		return data;
@@ -62,5 +63,14 @@ public class DataBean implements Serializable{
 	}
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+	public int getPositionToSignal() {
+		return positionToSignal;
+	}
+	public void setPositionToSignal(int positionToSignal) {
+		this.positionToSignal = positionToSignal;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 }
