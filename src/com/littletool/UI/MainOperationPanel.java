@@ -318,7 +318,6 @@ public class MainOperationPanel implements ItemListener{
 		}
 		
 		update();
-		System.out.println("conditionList size:"+conditionList.size());
 	}
 	
 	private void repain(){
@@ -332,7 +331,6 @@ public class MainOperationPanel implements ItemListener{
 	
 	private void load(){
 		File currentParentFile = new File("");
-		System.out.println(currentParentFile.getAbsolutePath());
 		JFileChooser jfc = new JFileChooser(currentParentFile.getAbsolutePath());
 		jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		jfc.showDialog(new JLabel(), "选择");
@@ -348,11 +346,11 @@ public class MainOperationPanel implements ItemListener{
 			inputDataList = loadDataList;
 			textData = Util.getTextData(inputDataList);
 		}
-		loadConf();
+		loadConf(file.getAbsolutePath());
 	}
 	
-	private void loadConf(){
-		configureMap = DataDao.loadConf(new File(saveConfPath()));
+	private void loadConf(String fileName){
+		configureMap = DataDao.loadConf(new File(fileName.replace(".data", ".conf")));
 		if(configureMap == null){
 			configureMap = new HashMap<String, ConfigureBean>();
 		}else{
@@ -374,7 +372,7 @@ public class MainOperationPanel implements ItemListener{
 	}
 	
 	private String saveConfPath(){
-		return Util.getCurrentPath()+File.separator+"init.conf";
+		return saveFilepath().replace(".data", ".conf");
 	}
 	
 	public static void main(String[] args) {
