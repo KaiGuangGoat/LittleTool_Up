@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.event.ItemListener;
 
 import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -36,8 +37,14 @@ public class UIHelper {
 		return box;
 	}
 	
-	public static JCheckBox createCheckBox(String name,String lable,ItemListener listener){
+	public static JButton createButton(String text){
+		JButton button = new JButton(text);
+		return button;
+	}
+	
+	public static JCheckBox createCheckBox(String name,String lable,boolean selected,ItemListener listener){
 		JCheckBox checkBox = new JCheckBox(lable);
+		checkBox.setSelected(selected);
 		checkBox.setName(name);
 		checkBox.addItemListener(listener);
 		return checkBox;

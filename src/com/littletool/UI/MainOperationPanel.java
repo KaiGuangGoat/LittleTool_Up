@@ -6,15 +6,19 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -25,6 +29,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import com.littletool.Constant;
+import com.littletool.bean.ConfigureBean;
 import com.littletool.bean.DataBean;
 import com.littletool.condition.BaseCondition;
 import com.littletool.condition.ConditionSelector;
@@ -34,7 +39,7 @@ import com.littletool.util.Util;
 
 public class MainOperationPanel implements ItemListener{
 	
-	private JFrame window;
+	public static JFrame window;
 	
 	private JTextField jtxEA;
 	private String jtxEAString = "";
@@ -61,6 +66,14 @@ public class MainOperationPanel implements ItemListener{
 	private List<DataBean> outputDataList;
 	
 	private StringBuilder textData;
+	
+	private JButton reFreshButton;
+	
+	private JButton saveButton;
+	
+	private JButton deleteButton;
+	
+	public static Map<String, ConfigureBean> configureMap;
 	
 	private KeyListener inputListener = new KeyListener() {
 		
@@ -103,15 +116,39 @@ public class MainOperationPanel implements ItemListener{
 		inputDataList = new ArrayList<>();
 		
 		textData = new StringBuilder();
+		
+		initButton();
+		
 		load();
 	}
 	
+	private void initButton(){
+		reFreshButton = UIHelper.createButton("刷新");
+		reFreshButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				update();
+			}
+		});
+		saveButton = UIHelper.createButton("保存");
+		saveButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				save();
+			}
+		});
+		deleteButton = UIHelper.createButton("删除");
+		deleteButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+			}
+		});
+	}
+	
 	public void show(){
-//		Box boxLeftParent = Box.createHorizontalBox();
 		Box boxLeft = Box.createVerticalBox();
 		boxLeft.setSize(new Dimension(200,900));
-		
-//		boxLeftParent.add(boxLeft);
 		
 		Box boxEAName = UIHelper.createBox("EA名称");
 		jtxEA = UIHelper.createJTextField(jtxEAString);
@@ -137,23 +174,26 @@ public class MainOperationPanel implements ItemListener{
 		
 		boxSequenceCondition = UIHelper.createBox("顺序");
 		for(String label:Constant.SEQUENCE_CONDITION){
-			boxSequenceCondition.add(UIHelper.createCheckBox(Constant.SEQUE+label,label,this));
+			boolean selected = false;
+			ConfigureBean configureBean = configureMap.get(Constant.SEQUE+label);
+			if(configureBean!=null){
+				selected = configureBean.isSelected();
+			}
+			boxSequenceCondition.add(UIHelper.createCheckBox(Constant.SEQUE+label,label,selected,this));
 		}
 		boxLeft.add(boxSequenceCondition);
+		
+		boxLeft.add(reFreshButton);
+		boxLeft.add(saveButton);
+		boxLeft.add(deleteButton);
 		
 		boxRight = Box.createVerticalBox();
 		
 		boxTableTitle = UIHelper.createBoxH("");
 		boxTableTitle.setSize(new Dimension(700,200));
-//		titleScroll = new JScrollPane();
-//		boxTableTitle.add(titleScroll);
 		boxTableTitle.add(UIHelper.createTableScrollPane(new String[]{"时间","备注"}));
 		boxRight.add(boxTableTitle);
 		
-		
-//		JScrollPane scrollPane = new JScrollPane();
-//		scrollPane.setSize(new Dimension(700,700));
-//		boxRight.add(scrollPane);
 		
 		JPanel panel = new JPanel();
 		BoxLayout layout = new BoxLayout(panel, BoxLayout.X_AXIS);
@@ -163,13 +203,22 @@ public class MainOperationPanel implements ItemListener{
 		
 		window.setContentPane(panel);
 		window.setVisible(true);
+		update();
 	}
 	
 	private Box sumItemBox(String item){
 		Box box = UIHelper.createBoxH("");
-		box.add(UIHelper.createCheckBox(Constant.SUM+item,item,this));
+		boolean selected = false;
+		ConfigureBean configureBean = configureMap.get(Constant.SUM+item);
+		if(configureBean!=null){
+			selected = configureBean.isSelected();
+		}
+		box.add(UIHelper.createCheckBox(Constant.SUM+item,item,selected,this));
 		JTextField jtf = UIHelper.createJTextField(50,30);
 		jtf.addKeyListener(inputListener);
+		if(configureBean!=null){
+			jtf.setText(configureBean.getSumGoal()+"");
+		}
 		box.add(jtf);
 		ConditionSelector.select(Constant.SUM+item).setJtf(jtf);
 		return box;
@@ -198,35 +247,29 @@ public class MainOperationPanel implements ItemListener{
 	
 	void update(){
 		boxTableTitle.removeAll();
+		textData = Util.getTextData(inputDataList);
 		List<JTable> dataTable = new ArrayList<>();
 		for(BaseCondition condition:conditionList){
 			
-			List<DataBean> inputDataListCopy = copyDeep();
+			List<DataBean> inputDataListCopy = Util.copyDeep(inputDataList);
 			condition.find(textData.toString(), inputDataListCopy);
 			condition.analyse();
 			outputDataList = condition.outputResult();
-			JTable table = condition.loadData(boxTableTitle);
+			JTable table = condition.loadData(boxTableTitle,inputDataList);
 			dataTable.add(table);
 //			repain();
 		}
-		dataTable.add(loadTimeComment());
+//		dataTable.add(loadTimeComment());
+		repain();
 		for(JTable table:dataTable){
 			UIHelper.tableScrollToEn(table);
 		}
 	}
 	
-	List<DataBean> copyDeep(){
-		List<DataBean> inputDataListCopy = new ArrayList<>(inputDataList.size());
-		for(DataBean data:inputDataList){
-			inputDataListCopy.add(data.clone());
-		}
-		return inputDataListCopy;
-	}
-	
 	
 	private JTable loadTimeComment(){
 		String[] names = {"时间","备注"};
-		DataTableModelRender modelRender = new DataTableModelRender(outputDataList, names);
+		DataTableModelRender modelRender = new DataTableModelRender(outputDataList,inputDataList, names);
 		JTable table = new JTable();
 		table.setModel(modelRender);
 		table.setDefaultRenderer(Object.class, modelRender);
@@ -265,6 +308,15 @@ public class MainOperationPanel implements ItemListener{
 		}else{
 			conditionList.remove(condition);
 		}
+		ConfigureBean config = configureMap.get(name);
+		if(config == null){
+			config = new ConfigureBean();
+			config.setSelected(jcb.isSelected());
+			configureMap.put(name, config);
+		}else{
+			config.setSelected(jcb.isSelected());
+		}
+		
 		update();
 		System.out.println("conditionList size:"+conditionList.size());
 	}
@@ -275,6 +327,7 @@ public class MainOperationPanel implements ItemListener{
 	
 	private void save(){
 		DataDao.save(saveFilepath(), inputDataList);
+		DataDao.save(saveConfPath(), configureMap);
 	}
 	
 	private void load(){
@@ -293,8 +346,22 @@ public class MainOperationPanel implements ItemListener{
 		List<DataBean> loadDataList = DataDao.load(file);
 		if(loadDataList != null){
 			inputDataList = loadDataList;
-			textData.append(Util.getTextData(inputDataList));
-			
+			textData = Util.getTextData(inputDataList);
+		}
+		loadConf();
+	}
+	
+	private void loadConf(){
+		configureMap = DataDao.loadConf(new File(saveConfPath()));
+		if(configureMap == null){
+			configureMap = new HashMap<String, ConfigureBean>();
+		}else{
+			for(String key:configureMap.keySet()){
+				BaseCondition condition = ConditionSelector.select(key);
+				if(condition!=null){
+					conditionList.add(condition);
+				}
+			}
 		}
 	}
 	
@@ -303,8 +370,11 @@ public class MainOperationPanel implements ItemListener{
 		if(Util.stringIsEmpty(fileName)){
 			fileName = "EA_EURUSD";
 		}
-		
 		return Util.getCurrentPath()+File.separator+fileName+".data";
+	}
+	
+	private String saveConfPath(){
+		return Util.getCurrentPath()+File.separator+"init.conf";
 	}
 	
 	public static void main(String[] args) {

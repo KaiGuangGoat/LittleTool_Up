@@ -16,10 +16,13 @@ public class DataTableModelRender implements TableModel,TableCellRenderer{
 	
 	private List<DataBean> dataList;
 	
+	private List<DataBean> orgDataList;//原始数据，用来修改和删除用的
+	
 	private String[] columnNames;
 	
-	public DataTableModelRender(List<DataBean> dataList,String[] columnNames){
+	public DataTableModelRender(List<DataBean> dataList,List<DataBean>orgDataList,String[] columnNames){
 		this.dataList = dataList;
+		this.orgDataList = orgDataList;
 		this.columnNames = columnNames;
 	}
 
@@ -49,7 +52,7 @@ public class DataTableModelRender implements TableModel,TableCellRenderer{
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
@@ -84,6 +87,12 @@ public class DataTableModelRender implements TableModel,TableCellRenderer{
 				value = "备入"+dataBean.getPositionToSignal()+"";
 			}
 			break;
+		case 3:
+			value = dataBean.getInputTime();
+			break;
+		case 4:
+			value = dataBean.getComment();
+			break;
 		}
 		
 		return value;
@@ -91,7 +100,37 @@ public class DataTableModelRender implements TableModel,TableCellRenderer{
 
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-		
+		DataBean dataBean = dataList.get(rowIndex);
+		String value = aValue.toString();
+		switch(columnIndex){
+		case 0:
+			if("1".equals(value)){
+				dataBean.setData(1);
+				dataBean.setColor(Constant.COLOR_POSITIVE);
+				orgDataList.get(rowIndex).setData(1);
+				orgDataList.get(rowIndex).setColor(Constant.COLOR_POSITIVE);
+			}
+			if("-1".equals(value)){
+				dataBean.setData(-1);
+				dataBean.setColor(Constant.COLOR_NEGATIVE);
+				orgDataList.get(rowIndex).setData(-1);
+				orgDataList.get(rowIndex).setColor(Constant.COLOR_NEGATIVE);
+			}
+			break;
+		case 1:
+			
+			break;
+		case 2:
+			
+			break;
+		case 3:
+			
+			break;
+		case 4:
+			dataBean.setComment(value);
+			orgDataList.get(rowIndex).setComment(value);
+			break;
+		}
 		
 	}
 

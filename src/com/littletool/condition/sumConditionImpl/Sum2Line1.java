@@ -3,6 +3,8 @@ package com.littletool.condition.sumConditionImpl;
 import java.util.List;
 
 import com.littletool.Constant;
+import com.littletool.UI.MainOperationPanel;
+import com.littletool.bean.ConfigureBean;
 import com.littletool.bean.DataBean;
 import com.littletool.condition.SumCondition;
 
@@ -19,5 +21,13 @@ public class Sum2Line1 extends SumCondition{
 		// TODO Auto-generated method stub
 		return "2-1    "+sumGoal;
 	}
-
+	
+	@Override
+	public void sumGoal() {
+		super.sumGoal();
+		ConfigureBean config = MainOperationPanel.configureMap.get(KEY);
+		if(config != null){
+			config.setSumGoal(sumGoal);
+		}
+	}
 }

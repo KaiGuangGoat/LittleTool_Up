@@ -2,12 +2,21 @@ package com.littletool.util;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import com.littletool.bean.DataBean;
 
 public class Util {
+	
+	public static List<DataBean> copyDeep(List<DataBean> inputDataList){
+		List<DataBean> inputDataListCopy = new ArrayList<>(inputDataList.size());
+		for(DataBean data:inputDataList){
+			inputDataListCopy.add(data.clone());
+		}
+		return inputDataListCopy;
+	}
 	
 	public static String getCurrentTimeStr(){
 		Date date = new Date(System.currentTimeMillis());
@@ -27,7 +36,7 @@ public class Util {
 		return file.getAbsolutePath();
 	}
 	
-	public static String getTextData(List<DataBean> dataList){
+	public static StringBuilder getTextData(List<DataBean> dataList){
 		StringBuilder textData = new StringBuilder();
 		for(DataBean data:dataList){
 			if(data.getData()==1){
@@ -37,7 +46,7 @@ public class Util {
 				textData.append("x");
 			}
 		}
-		return textData.toString();
+		return textData;
 	}
 	
 	public static void main(String[] args) {
