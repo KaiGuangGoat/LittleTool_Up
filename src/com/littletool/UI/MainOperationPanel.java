@@ -98,7 +98,7 @@ public class MainOperationPanel implements ItemListener{
 	};
 	
 	public MainOperationPanel(){
-		window = new JFrame("小工具升级版");
+		window = new JFrame(Constant.VERSION_NAME);
 		window.setSize(new Dimension(900, 900));
 		window.setLocationRelativeTo(null);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -185,7 +185,7 @@ public class MainOperationPanel implements ItemListener{
 		
 		boxLeft.add(reFreshButton);
 		boxLeft.add(saveButton);
-		boxLeft.add(deleteButton);
+//		boxLeft.add(deleteButton);
 		
 		boxRight = Box.createVerticalBox();
 		

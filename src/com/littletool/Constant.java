@@ -4,6 +4,8 @@ import java.awt.Color;
 
 public class Constant {
 	
+	public static final String VERSION_NAME = "小工具升级版1.0";
+	
 	public static final String[] SUM_CONDITION = {"2.1","2-1","3-1"};
 	
 	public static final String[] SEQUENCE_CONDITION = {"2.1","2.2.1","3-1","4-1","5-1"};

@@ -27,7 +27,7 @@ public abstract class BaseCondition {
 	protected String condition;
 	
 	protected List<DataBean> inputDataList;
-	protected List<SignalBean> signalList = new ArrayList<SignalBean>();
+	protected List<SignalBean> signalList;
 	
 	protected JTextField jtf;
 	
@@ -47,6 +47,8 @@ public abstract class BaseCondition {
 	}
 	
 	public void find(String textData,List<DataBean> inputDataList){
+		signalList = null;
+		signalList = new ArrayList<>();
 		sumGoal();
 		this.inputDataList = inputDataList;
 		Pattern p = Pattern.compile(condition);

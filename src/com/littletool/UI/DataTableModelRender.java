@@ -77,6 +77,9 @@ public class DataTableModelRender implements TableModel,TableCellRenderer{
 		switch(columnIndex){
 		case 0:
 			value = dataBean.getData()+"";
+			if(dataBean.getData()==0){
+				value="删除";
+			}
 			break;
 		case 1:
 			if(dataBean.isSignalEnd()){
@@ -116,6 +119,11 @@ public class DataTableModelRender implements TableModel,TableCellRenderer{
 				dataBean.setColor(Constant.COLOR_NEGATIVE);
 				orgDataList.get(rowIndex).setData(-1);
 				orgDataList.get(rowIndex).setColor(Constant.COLOR_NEGATIVE);
+			}
+			if("删除".equals(value)){
+				dataBean.setData(0);
+				dataList.remove(dataBean);
+				orgDataList.remove(orgDataList.get(rowIndex));
 			}
 			break;
 		case 1:
