@@ -198,16 +198,21 @@ public class MainOperationPanel implements ItemListener{
 	
 	void update(){
 		boxTableTitle.removeAll();
+		List<JTable> dataTable = new ArrayList<>();
 		for(BaseCondition condition:conditionList){
 			
 			List<DataBean> inputDataListCopy = copyDeep();
 			condition.find(textData.toString(), inputDataListCopy);
 			condition.analyse();
 			outputDataList = condition.outputResult();
-			condition.loadData(boxTableTitle);
-			repain();
+			JTable table = condition.loadData(boxTableTitle);
+			dataTable.add(table);
+//			repain();
 		}
-		loadTimeComment();
+		dataTable.add(loadTimeComment());
+		for(JTable table:dataTable){
+			UIHelper.tableScrollToEn(table);
+		}
 	}
 	
 	List<DataBean> copyDeep(){
@@ -219,7 +224,7 @@ public class MainOperationPanel implements ItemListener{
 	}
 	
 	
-	private void loadTimeComment(){
+	private JTable loadTimeComment(){
 		String[] names = {"时间","备注"};
 		DataTableModelRender modelRender = new DataTableModelRender(outputDataList, names);
 		JTable table = new JTable();
@@ -228,6 +233,7 @@ public class MainOperationPanel implements ItemListener{
 		JScrollPane scroll = new JScrollPane(table);
 		boxTableTitle.add(scroll);
 		repain();
+		return table;
 	}
 	
 	private DataBean dataInstance(int dataInt,Color color){

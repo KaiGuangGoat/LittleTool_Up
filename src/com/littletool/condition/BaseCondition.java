@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.Box;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -81,15 +82,17 @@ public abstract class BaseCondition {
 		return inputDataList;
 	}
 	
-	public void loadData(Box boxTableTitle){
+	public JTable loadData(Box boxTableTitle){
 		
 		String[] names = {getKey(),"信号","入场"};
 		DataTableModelRender modelRender = new DataTableModelRender(outputResult(), names);
 		JTable table = new JTable();
 		table.setModel(modelRender);
 		table.setDefaultRenderer(Object.class, modelRender);
+		
 		JScrollPane scroll = new JScrollPane(table);
 		boxTableTitle.add(scroll);
+		return table;
 	}
 	
 	public void setJtf(JTextField jtf){

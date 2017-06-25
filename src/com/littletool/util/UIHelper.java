@@ -51,4 +51,10 @@ public class UIHelper {
 		return scroll;
 	}
 	
+	public static void tableScrollToEn(JTable table){
+		int rowCount = table.getRowCount();
+		table.getSelectionModel().setSelectionInterval(rowCount-1, rowCount-1);
+		table.scrollRectToVisible(table.getCellRect(rowCount-1, 0, true));;
+	}
+	
 }
