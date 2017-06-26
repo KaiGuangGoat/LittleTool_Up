@@ -43,6 +43,8 @@ public class OutByExcel {
 		row.createCell(columnNameIndex++).setCellValue("时间");
 		row.createCell(columnNameIndex++).setCellValue("备注");
 		
+		sheet.createFreezePane(columnNameIndex, 1);
+		
 		List<DataBean> dataList0 = conditionList.get(0).outputResult();
 		int dataLen = dataList0.size();
 		
