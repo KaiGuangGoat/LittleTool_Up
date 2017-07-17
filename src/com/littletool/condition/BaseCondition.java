@@ -15,6 +15,8 @@ import javax.swing.JTextField;
 import com.littletool.UI.DataTableModelRender;
 import com.littletool.bean.DataBean;
 import com.littletool.bean.SignalBean;
+import com.littletool.stopLoss.StopLossType;
+import com.littletool.tuple.TwoTuple;
 
 public abstract class BaseCondition {
 	public static final String CONDITION_2_DOT_1 = "√{2,}x{1,}√{1}x{1}";
@@ -44,6 +46,12 @@ public abstract class BaseCondition {
 	protected void flagPrepareEnter(int position,int positionToSignal){
 		inputDataList.get(position).setEnterReady(true);
 		inputDataList.get(position).setPositionToSignal(positionToSignal);
+	}
+	
+	protected void flagStopLoss(int position,StopLossType stopType){
+		TwoTuple<Boolean, StopLossType> stopLoss 
+			= new TwoTuple<Boolean, StopLossType>(true, stopType);
+		inputDataList.get(position).setStop(stopLoss);
 	}
 	
 	public void find(String textData,List<DataBean> inputDataList){

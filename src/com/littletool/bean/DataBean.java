@@ -3,6 +3,9 @@ package com.littletool.bean;
 import java.awt.Color;
 import java.io.Serializable;
 
+import com.littletool.stopLoss.StopLossType;
+import com.littletool.tuple.TwoTuple;
+
 /**
  * 
  * @author Kaiguang
@@ -21,6 +24,7 @@ public class DataBean implements Serializable,Cloneable{
 	private Color color;
 	private boolean isSignalEnd = false;//是否属于信号量的最后一位
 	private boolean isEnterReady = false;//是否准备入场
+	private TwoTuple<Boolean, StopLossType> stop;//是否止损位
 	private int positionToSignal;//属于第几个信号量
 	private String comment;//备注
 	@Override
@@ -82,5 +86,11 @@ public class DataBean implements Serializable,Cloneable{
 	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+	public TwoTuple<Boolean, StopLossType> getStop() {
+		return stop;
+	}
+	public void setStop(TwoTuple<Boolean, StopLossType> stop) {
+		this.stop = stop;
 	}
 }
