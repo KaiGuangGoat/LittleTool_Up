@@ -18,5 +18,6 @@ public class Constant {
 	public static final Color COLOR_NEGATIVE = Color.red;
 	public static final Color COLOR_SIGNAL_END = Color.yellow;
 	public static final Color COLOR_PREPARE_ENTER = new Color(237,125,10);
+	public static final Color COLOR_STOP_LOSS = new Color(204,204,153);
 	
 }

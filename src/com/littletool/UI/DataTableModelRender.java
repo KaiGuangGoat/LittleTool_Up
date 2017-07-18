@@ -92,9 +92,14 @@ public class DataTableModelRender implements TableModel,TableCellRenderer{
 			}
 			break;
 		case 3:
-			value = dataBean.getInputTime();
+			if(dataBean.getStop() != null){
+				value = dataBean.getStop().b.getValue()+dataBean.getPositionToSignal();
+			}
 			break;
 		case 4:
+			value = dataBean.getInputTime();
+			break;
+		case 5:
 			value = dataBean.getComment();
 			break;
 		}
@@ -136,6 +141,9 @@ public class DataTableModelRender implements TableModel,TableCellRenderer{
 			
 			break;
 		case 4:
+			
+			break;
+		case 5:
 			dataBean.setComment(value);
 			orgDataList.get(rowIndex).setComment(value);
 			break;
@@ -175,6 +183,11 @@ public class DataTableModelRender implements TableModel,TableCellRenderer{
 		case 2:
 			if(dataBean.isEnterReady()){
 				render.setBackground(Constant.COLOR_PREPARE_ENTER);
+			}
+			break;
+		case 3:
+			if(dataBean.getStop()!=null){
+				render.setBackground(Constant.COLOR_STOP_LOSS);
 			}
 			break;
 		}

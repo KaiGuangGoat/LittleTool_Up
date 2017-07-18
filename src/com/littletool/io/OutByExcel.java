@@ -38,6 +38,7 @@ public class OutByExcel {
 			row.createCell(columnNameIndex++).setCellValue(condition.getKey());
 			row.createCell(columnNameIndex++).setCellValue("信号");
 			row.createCell(columnNameIndex++).setCellValue("入场");
+			row.createCell(columnNameIndex++).setCellValue("止损");
 			columnNameIndex++;
 		}
 		row.createCell(columnNameIndex++).setCellValue("时间");
@@ -60,6 +61,7 @@ public class OutByExcel {
 				setCellStyleIntValue(rowData.createCell(columnIndex++), dataBean.getColor(), dataBean.getData());
 				setCellStyleStringValue(rowData.createCell(columnIndex++), Constant.COLOR_SIGNAL_END, dataBean.isSignalEnd()?dataBean.getPositionToSignal()+"":"");
 				setCellStyleStringValue(rowData.createCell(columnIndex++), Constant.COLOR_PREPARE_ENTER, dataBean.isEnterReady()?"备入"+dataBean.getPositionToSignal():"");
+				setCellStyleStringValue(rowData.createCell(columnIndex++), Constant.COLOR_STOP_LOSS, dataBean.getStop()!=null?dataBean.getStop().b.getValue()+dataBean.getPositionToSignal():"");
 				columnIndex++;
 			}
 			rowData.createCell(columnIndex++).setCellValue(dataList0.get(i).getInputTime());

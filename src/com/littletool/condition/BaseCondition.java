@@ -95,7 +95,7 @@ public abstract class BaseCondition {
 	
 	public JTable loadData(Box boxTableTitle,List<DataBean> orgDataList){
 		
-		String[] names = {getKey(),"信号","入场","时间","备注"};
+		String[] names = {getKey(),"信号","入场","止损","时间","备注"};
 		DataTableModelRender modelRender = new DataTableModelRender(outputResult(),orgDataList, names);
 		JTable table = new JTable();
 		table.setModel(modelRender);
