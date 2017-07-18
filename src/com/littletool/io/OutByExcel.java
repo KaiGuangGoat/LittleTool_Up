@@ -48,8 +48,11 @@ public class OutByExcel {
 		
 		List<DataBean> dataList0 = conditionList.get(0).outputResult();
 		int dataLen = dataList0.size();
-		
-		for(int i=0;i<dataLen;i++){
+		int i = 0;
+		if(dataLen > 300){
+			i=dataLen-300;
+		}
+		for(;i<dataLen;i++){
 			HSSFRow rowData = sheet.createRow(i+1);
 			
 			int columnIndex = 0;
