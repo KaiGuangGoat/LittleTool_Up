@@ -48,10 +48,11 @@ public abstract class BaseCondition {
 		inputDataList.get(position).setPositionToSignal(positionToSignal);
 	}
 	
-	protected void flagStopLoss(int position,StopLossType stopType){
+	protected void flagStopLoss(int position,StopLossType stopType,int positionToSignal){
 		TwoTuple<Boolean, StopLossType> stopLoss 
 			= new TwoTuple<Boolean, StopLossType>(true, stopType);
 		inputDataList.get(position).setStop(stopLoss);
+		inputDataList.get(position).setPositionToSignal(positionToSignal);
 	}
 	
 	public void find(String textData,List<DataBean> inputDataList){

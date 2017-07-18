@@ -1,6 +1,8 @@
 package com.littletool.condition;
 
+import com.littletool.bean.DataBean;
 import com.littletool.bean.SignalBean;
+import com.littletool.stopLoss.StopLossType;
 import com.littletool.util.Util;
 
 public abstract class SumCondition extends BaseCondition{
@@ -8,6 +10,8 @@ public abstract class SumCondition extends BaseCondition{
 	
 	protected static final int MAX_COUNT = 100;
 	protected int sumGoal = 5;//设置的求和数
+	protected static final int FIXED_COUNT = 200;
+	
 	
 	@Override
 	public void analyse() {
@@ -25,6 +29,7 @@ public abstract class SumCondition extends BaseCondition{
 				sum = sum + data;
 				if(sum==sumGoal){
 					flagPrepareEnter(startPosition + index,signal.getIndex());
+					analyseStopLoss(startPosition + index,signal);
 					break;
 				}
 				if(index == MAX_COUNT){
@@ -32,8 +37,29 @@ public abstract class SumCondition extends BaseCondition{
 				}
 				index++;
 			}
-			
-			
+		}
+	}
+	
+	private void analyseStopLoss(int start,SignalBean signal){
+		if(start+1>=inputDataList.size()){
+			return;
+		}
+		int sum = 0;
+		for(int i=start+1;i<inputDataList.size();i++){
+			DataBean data = inputDataList.get(i);
+			sum = sum + data.getData();
+			if(sum==10){
+				flagStopLoss(i, StopLossType.NUMERICAL_STOP, signal.getIndex());
+				return;
+			}
+			if(sum==-20){
+				flagStopLoss(i, StopLossType.NO_STOP, signal.getIndex());
+				return;
+			}
+			if(i-(signal.getBeginPosition()-1)==FIXED_COUNT){
+				flagStopLoss(i, StopLossType.FIXED_STOP, signal.getIndex());
+				return;
+			}
 		}
 	}
 	

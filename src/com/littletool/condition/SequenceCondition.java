@@ -14,28 +14,28 @@ public abstract class SequenceCondition extends BaseCondition{
 		for(SignalBean signal:signalList){
 			flagSignal(signal);
 			flagPrepareEnter(signal.getEndPosition()-1, signal.getIndex());
-			analyseStopLoss(signal.getEndPosition());
+			analyseStopLoss(signal.getEndPosition(),signal.getIndex());
 		}
 	}
 	
-	private void analyseStopLoss(int start){
+	private void analyseStopLoss(int start,int signalIndex){
 		if(start >= inputDataList.size()){
 			return;
 		}
 		int sum = 0;
 		for(int i=start;i<inputDataList.size();i++){
 			DataBean dataBean = inputDataList.get(i);
-			if(i-start == 100){
-				flagStopLoss(i, StopLossType.SINGLE_STOP);
-				return;
-			}
 			sum = sum + dataBean.getData();
 			if(sum==10){
-				flagStopLoss(i, StopLossType.NUMERICAL_STOP);
+				flagStopLoss(i, StopLossType.NUMERICAL_STOP,signalIndex);
 				return;
 			}
 			if(sum == -10){
-				flagStopLoss(i, StopLossType.NO_STOP);
+				flagStopLoss(i, StopLossType.NO_STOP,signalIndex);
+				return;
+			}
+			if(i-start == 100){
+				flagStopLoss(i, StopLossType.SINGLE_STOP,signalIndex);
 				return;
 			}
 		}
