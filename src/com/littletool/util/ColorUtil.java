@@ -18,6 +18,7 @@ public class ColorUtil {
 		colorMap.put(Constant.COLOR_SIGNAL_END, HSSFColor.YELLOW.index);
 		colorMap.put(Constant.COLOR_PREPARE_ENTER, HSSFColor.SKY_BLUE.index);
 		colorMap.put(Color.gray, HSSFColor.GREY_25_PERCENT.index);
+		colorMap.put(Constant.COLOR_STOP_LOSS, HSSFColor.PINK.index);
 	}
 	
 	public static Short color2HSSFColor(Color color){
