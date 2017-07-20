@@ -56,7 +56,7 @@ public abstract class SumCondition extends BaseCondition{
 				flagStopLoss(i, StopLossType.NO_STOP, signal.getIndex());
 				return;
 			}
-			if(i-(signal.getBeginPosition()-1)==FIXED_COUNT){
+			if(i-(signal.getEndPosition()-1)==FIXED_COUNT){
 				flagStopLoss(i, StopLossType.FIXED_STOP, signal.getIndex());
 				return;
 			}

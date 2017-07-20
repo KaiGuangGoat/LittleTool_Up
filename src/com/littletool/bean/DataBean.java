@@ -24,7 +24,8 @@ public class DataBean implements Serializable,Cloneable{
 	private Color color;
 	private boolean isSignalEnd = false;//是否属于信号量的最后一位
 	private boolean isEnterReady = false;//是否准备入场
-	private TwoTuple<Boolean, StopLossType> stop;//是否止损位
+//	private TwoTuple<Boolean, StopLossType> stop;//是否止损位
+	private String stop = "";
 	private int positionToSignal;//属于第几个信号量
 	private String comment;//备注
 	@Override
@@ -87,10 +88,14 @@ public class DataBean implements Serializable,Cloneable{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	public TwoTuple<Boolean, StopLossType> getStop() {
+	public String getStop() {
 		return stop;
 	}
-	public void setStop(TwoTuple<Boolean, StopLossType> stop) {
-		this.stop = stop;
+	public void setStop(String stop) {
+		if(this.stop == null){
+			this.stop = stop;
+			return;
+		}
+		this.stop = this.stop+","+stop;
 	}
 }

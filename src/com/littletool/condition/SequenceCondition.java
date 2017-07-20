@@ -34,7 +34,7 @@ public abstract class SequenceCondition extends BaseCondition{
 				flagStopLoss(i, StopLossType.NO_STOP,signalIndex);
 				return;
 			}
-			if(i-start == 100){
+			if(i-start == 99){
 				flagStopLoss(i, StopLossType.SINGLE_STOP,signalIndex);
 				return;
 			}

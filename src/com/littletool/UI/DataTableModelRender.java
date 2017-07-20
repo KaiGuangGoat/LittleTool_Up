@@ -93,7 +93,7 @@ public class DataTableModelRender implements TableModel,TableCellRenderer{
 			break;
 		case 3:
 			if(dataBean.getStop() != null){
-				value = dataBean.getStop().b.getValue()+dataBean.getPositionToSignal();
+				value = dataBean.getStop();
 			}
 			break;
 		case 4:
