@@ -3,8 +3,7 @@ package com.littletool.bean;
 import java.awt.Color;
 import java.io.Serializable;
 
-import com.littletool.stopLoss.StopLossType;
-import com.littletool.tuple.TwoTuple;
+import com.littletool.util.Util;
 
 /**
  * 
@@ -20,11 +19,12 @@ public class DataBean implements Serializable,Cloneable{
 	
 	private int data;//输入的数据
 	private String inputTime;//输入时间
-	private int position;//属于第几个
+//	private int position;//属于第几个
 	private Color color;
 	private boolean isSignalEnd = false;//是否属于信号量的最后一位
-	private boolean isEnterReady = false;//是否准备入场
+//	private boolean isEnterReady = false;//是否准备入场
 //	private TwoTuple<Boolean, StopLossType> stop;//是否止损位
+	private String readyEnter;
 	private String stop = "";
 	private int positionToSignal;//属于第几个信号量
 	private String comment;//备注
@@ -49,12 +49,6 @@ public class DataBean implements Serializable,Cloneable{
 	public void setInputTime(String inputTime) {
 		this.inputTime = inputTime;
 	}
-	public int getPosition() {
-		return position;
-	}
-	public void setPosition(int position) {
-		this.position = position;
-	}
 	public Color getColor() {
 		return color;
 	}
@@ -66,12 +60,6 @@ public class DataBean implements Serializable,Cloneable{
 	}
 	public void setSignalEnd(boolean isSignalEnd) {
 		this.isSignalEnd = isSignalEnd;
-	}
-	public boolean isEnterReady() {
-		return isEnterReady;
-	}
-	public void setEnterReady(boolean isEnterReady) {
-		this.isEnterReady = isEnterReady;
 	}
 	public String getComment() {
 		return comment;
@@ -87,6 +75,19 @@ public class DataBean implements Serializable,Cloneable{
 	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+	public String getReadyEnter() {
+		if(readyEnter == null){
+			readyEnter = "";
+		}
+		return readyEnter;
+	}
+	public void setReadyEnter(String readyEnter) {
+		if(Util.stringIsEmpty(this.readyEnter)){
+			this.readyEnter = readyEnter;
+			return;
+		}
+		this.readyEnter = this.readyEnter + "," + readyEnter;
 	}
 	public String getStop() {
 		return stop;

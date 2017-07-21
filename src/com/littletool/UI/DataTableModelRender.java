@@ -12,6 +12,7 @@ import javax.swing.table.TableModel;
 
 import com.littletool.Constant;
 import com.littletool.bean.DataBean;
+import com.littletool.util.Util;
 
 public class DataTableModelRender implements TableModel,TableCellRenderer{
 	
@@ -87,8 +88,8 @@ public class DataTableModelRender implements TableModel,TableCellRenderer{
 			}
 			break;
 		case 2:
-			if(dataBean.isEnterReady()){
-				value = "备入"+dataBean.getPositionToSignal()+"";
+			if(!Util.stringIsEmpty(dataBean.getReadyEnter())){
+				value = dataBean.getReadyEnter();
 			}
 			break;
 		case 3:
@@ -181,12 +182,12 @@ public class DataTableModelRender implements TableModel,TableCellRenderer{
 			}
 			break;
 		case 2:
-			if(dataBean.isEnterReady()){
+			if(!Util.stringIsEmpty(dataBean.getReadyEnter())){
 				render.setBackground(Constant.COLOR_PREPARE_ENTER);
 			}
 			break;
 		case 3:
-			if(dataBean.getStop()!=null){
+			if(!Util.stringIsEmpty(dataBean.getStop())){
 				render.setBackground(Constant.COLOR_STOP_LOSS);
 			}
 			break;

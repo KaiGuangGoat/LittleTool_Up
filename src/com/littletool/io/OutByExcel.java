@@ -63,7 +63,7 @@ public class OutByExcel {
 //				rowData.createCell(columnIndex++).setCellValue(dataBean.getData());
 				setCellStyleIntValue(rowData.createCell(columnIndex++), dataBean.getColor(), dataBean.getData());
 				setCellStyleStringValue(rowData.createCell(columnIndex++), Constant.COLOR_SIGNAL_END, dataBean.isSignalEnd()?dataBean.getPositionToSignal()+"":"");
-				setCellStyleStringValue(rowData.createCell(columnIndex++), Constant.COLOR_PREPARE_ENTER, dataBean.isEnterReady()?"备入"+dataBean.getPositionToSignal():"");
+				setCellStyleStringValue(rowData.createCell(columnIndex++), Constant.COLOR_PREPARE_ENTER, dataBean.getReadyEnter());
 				setCellStyleStringValue(rowData.createCell(columnIndex++), Constant.COLOR_STOP_LOSS, dataBean.getStop()!=null?dataBean.getStop():"");
 				columnIndex++;
 			}

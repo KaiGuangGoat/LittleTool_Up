@@ -287,9 +287,7 @@ public class MainOperationPanel implements ItemListener{
 		data.setColor(color);
 		data.setComment("");
 		data.setInputTime(Util.getCurrentTimeStr());
-		data.setPosition(0);
 		data.setPositionToSignal(0);
-		data.setEnterReady(false);
 		data.setSignalEnd(false);
 		return data;
 	}

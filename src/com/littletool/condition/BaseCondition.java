@@ -44,8 +44,9 @@ public abstract class BaseCondition {
 	}
 	
 	protected void flagPrepareEnter(int position,int positionToSignal){
-		inputDataList.get(position).setEnterReady(true);
-		inputDataList.get(position).setPositionToSignal(positionToSignal);
+//		inputDataList.get(position).setEnterReady(true);
+//		inputDataList.get(position).setPositionToSignal(positionToSignal);
+		inputDataList.get(position).setReadyEnter("备入"+positionToSignal);
 	}
 	
 	protected void flagStopLoss(int position,StopLossType stopType,int positionToSignal){
