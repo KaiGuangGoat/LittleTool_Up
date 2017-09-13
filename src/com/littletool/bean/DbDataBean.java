@@ -1,12 +1,18 @@
 package com.littletool.bean;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class DbDataBean {
+public class DbDataBean implements Serializable{
 	private long id;
 	private Date date;
 	private int value;
 	private String sourceFile;
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "id:"+id+"--date:"+date.toString()+"-- value:"+value +"-- sourceFile:"+sourceFile;
+	}
 	public long getId() {
 		return id;
 	}
