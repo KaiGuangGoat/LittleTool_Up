@@ -25,6 +25,12 @@ public class UIHelper {
 		return jtf;
 	}
 	
+	public static JTextField createJTextFieldMin(int minW,int minH){
+		final JTextField jtf = new JTextField("");
+		jtf.setMinimumSize(new Dimension(minW,minH));
+		return jtf;
+	}
+	
 	public static Box createBox(String title){
 		Box box = Box.createVerticalBox();
 		box.add(new JLabel(title));
