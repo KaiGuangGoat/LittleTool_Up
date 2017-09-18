@@ -3,12 +3,16 @@ package com.littletool.UI;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.util.Date;
 
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -33,6 +37,8 @@ public class SelectFIlePanel {
 	private JPanel panel;
 
 	private JButton addFileButton;
+	
+	private File[] selectFiles ;
 
 	public static void main(String[] args) {
 		SelectFIlePanel select = new SelectFIlePanel();
@@ -56,6 +62,21 @@ public class SelectFIlePanel {
 		panel.setLayout(new GridLayout(0, 4, 5, 5));
 
 		addFileButton = new JButton("添加源文件 +");
+		addFileButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				File currentParentFile = new File("");
+				
+				JFileChooser jfc = new JFileChooser(currentParentFile.getAbsolutePath());
+				jfc.setMultiSelectionEnabled(true);
+				jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				
+				jfc.showDialog(new JLabel(), "选择");
+				selectFiles = jfc.getSelectedFiles();
+				addSourceFile();
+			}
+		});
 
 		initBoxUp();
 		init();
@@ -82,6 +103,21 @@ public class SelectFIlePanel {
 		window.add(panel, BorderLayout.CENTER);
 		
 		panel.add(addFileButton);
+	}
+	
+	private void addSourceFile(){
+		for(File file:selectFiles){
+			System.out.println(file.getName());
+			String fileName = file.getName();
+			Box box = UIHelper.createBox(fileName);
+			box.add(new JButton("click"));
+			panel.add(box);
+		}
+		repain();
+	}
+	
+	private void repain(){
+		window.revalidate();
 	}
 
 	public void show() {
