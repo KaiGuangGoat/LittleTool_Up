@@ -8,7 +8,11 @@ public class Constant {
 	
 	public static final String[] SUM_CONDITION = {"2.1","2-1","3-1"};
 	
+	public static final String[] SUM_CONDITION_SELECT = {"2.1","3-1"};
+	
 	public static final String[] SEQUENCE_CONDITION = {"2.1","2.2.1","3-1","4-1","5-1"};
+	
+	public static final String[] SEQUENCE_CONDITION_SELECT = {"2.1","2.2.1","4-1","5-1"};
 	
 	public static final String SUM = "sum";
 	

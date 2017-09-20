@@ -5,30 +5,36 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSpinner;
 import javax.swing.JTextField;
-import javax.swing.SpinnerDateModel;
 
 import com.littletool.Constant;
+import com.littletool.condition.BaseCondition;
+import com.littletool.condition.ConditionSelector;
+import com.littletool.service.SelectFileService;
 import com.littletool.util.DateChooserJButton;
 import com.littletool.util.UIHelper;
 
-public class SelectFIlePanel {
+public class SelectFIlePanel extends MainOperationPanel{
 
 	public static JFrame window;
 
 	private Box boxUp;
+	
+	private Box boxDown;
 	
 	private JTextField startTime;
 	
@@ -38,7 +44,11 @@ public class SelectFIlePanel {
 
 	private JButton addFileButton;
 	
+	private JButton analyseButton;
+	
 	private File[] selectFiles ;
+	
+	private List<FileCondition> fileConditionList;
 
 	public static void main(String[] args) {
 		SelectFIlePanel select = new SelectFIlePanel();
@@ -46,6 +56,7 @@ public class SelectFIlePanel {
 	}
 
 	public SelectFIlePanel() {
+		super();
 		window = new JFrame(Constant.VERSION_NAME);
 		window.setSize(new Dimension(900, 900));
 		window.setLocationRelativeTo(null);
@@ -77,8 +88,21 @@ public class SelectFIlePanel {
 				addSourceFile();
 			}
 		});
+		
+		analyseButton = new JButton("开始分析");
+		analyseButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				beginAnalyse();
+			}
+		});
+		
+		fileConditionList = new ArrayList<>();
 
 		initBoxUp();
+		initBoxDown();
 		init();
 	}
 
@@ -97,12 +121,17 @@ public class SelectFIlePanel {
 		endTime = new DateChooserJButton();
 		boxUp.add(endTime);
 	}
+	
+	private void initBoxDown(){
+		boxDown = UIHelper.createBoxH("");
+		boxDown.add(addFileButton);
+		boxDown.add(analyseButton);
+	}
 
 	private void init() {
 		window.add(boxUp, BorderLayout.NORTH);
 		window.add(panel, BorderLayout.CENTER);
-		
-		panel.add(addFileButton);
+		window.add(boxDown,BorderLayout.SOUTH);
 	}
 	
 	private void addSourceFile(){
@@ -110,10 +139,36 @@ public class SelectFIlePanel {
 			System.out.println(file.getName());
 			String fileName = file.getName();
 			Box box = UIHelper.createBox(fileName);
-			box.add(new JButton("click"));
+			Box condition = UIHelper.createBoxH("");
+			condition.add(createBoxSumCondition());
+			condition.add(createBoxSequenceCondition());
+			box.add(condition);
+			
+			FileCondition fileCondition = new FileCondition();
+			fileCondition.selectedFile = file;
+			fileCondition.conditionBox = box;
+			fileConditionList.add(fileCondition);
+			
 			panel.add(box);
 		}
 		repain();
+	}
+	
+	private Box createBoxSumCondition(){
+		Box boxSumCondition = UIHelper.createBox("求和") ;
+		for(String label:Constant.SUM_CONDITION_SELECT){
+			boxSumCondition.add(sumItemBox(label));
+		}
+		
+		return boxSumCondition;
+	}
+	
+	private Box createBoxSequenceCondition(){
+		Box boxSequenceCondition = UIHelper.createBox("顺序");
+		for(String label:Constant.SEQUENCE_CONDITION_SELECT){
+			boxSequenceCondition.add(UIHelper.createCheckBox(Constant.SEQUE+label,label,false,this));
+		}
+		return boxSequenceCondition;
 	}
 	
 	private void repain(){
@@ -124,6 +179,19 @@ public class SelectFIlePanel {
 
 		// window.setVisible(true);
 		window.setVisible(true);
+	}
+	
+	@Override
+	public void itemStateChanged(ItemEvent e) {}
+	
+	private void beginAnalyse(){
+		SelectFileService service = new SelectFileService();
+		service.analyseFileCondition(fileConditionList);
+	}
+	
+	public static class FileCondition{
+		public File selectedFile;
+		public Box conditionBox;
 	}
 
 }

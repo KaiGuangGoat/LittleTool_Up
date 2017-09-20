@@ -98,7 +98,9 @@ public class MainOperationPanel implements ItemListener{
 		}
 	};
 	
-	public MainOperationPanel(){
+	public MainOperationPanel(){}
+	
+	public MainOperationPanel(String egnore){
 		window = new JFrame(Constant.VERSION_NAME);
 		window.setSize(new Dimension(900, 900));
 		window.setLocationRelativeTo(null);
@@ -208,10 +210,13 @@ public class MainOperationPanel implements ItemListener{
 		update();
 	}
 	
-	private Box sumItemBox(String item){
+	protected Box sumItemBox(String item){
 		Box box = UIHelper.createBoxH("");
 		boolean selected = false;
-		ConfigureBean configureBean = configureMap.get(Constant.SUM+item);
+		
+		ConfigureBean configureBean =null;
+		if(configureMap != null)
+			configureBean = configureMap.get(Constant.SUM+item);
 		if(configureBean!=null){
 			selected = configureBean.isSelected();
 		}
@@ -222,7 +227,7 @@ public class MainOperationPanel implements ItemListener{
 			jtf.setText(configureBean.getSumGoal()+"");
 		}
 		box.add(jtf);
-		ConditionSelector.select(Constant.SUM+item).setJtf(jtf);
+		ConditionSelector.selectInstance(Constant.SUM+item).setJtf(jtf);
 		return box;
 	}
 	
@@ -297,7 +302,7 @@ public class MainOperationPanel implements ItemListener{
 	public void itemStateChanged(ItemEvent e) {
 		JCheckBox jcb = (JCheckBox) e.getItem();
 		String name = jcb.getName();
-		BaseCondition condition = ConditionSelector.select(name);
+		BaseCondition condition = ConditionSelector.selectInstance(name);
 		if(condition == null){
 			System.out.println("itemStateChanged get condition null,name:"+name);
 			return ;
@@ -355,7 +360,7 @@ public class MainOperationPanel implements ItemListener{
 			configureMap = new HashMap<String, ConfigureBean>();
 		}else{
 			for(String key:configureMap.keySet()){
-				BaseCondition condition = ConditionSelector.select(key);
+				BaseCondition condition = ConditionSelector.selectInstance(key);
 				if(condition!=null){
 					conditionList.add(condition);
 				}
@@ -380,7 +385,7 @@ public class MainOperationPanel implements ItemListener{
 	}
 	
 	public static void main(String[] args) {
-		MainOperationPanel mainPanel = new MainOperationPanel();
+		MainOperationPanel mainPanel = new MainOperationPanel("");
 		mainPanel.show();
 	}
 }

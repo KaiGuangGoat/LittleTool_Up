@@ -15,4 +15,22 @@
     		<property name="sourceFile" column="source_file" type="string"></property>
     	
     	</class>
+    	
+    	<class name="RsiAllBean" table="rsi_table_all">
+		<id name="id" column="id" type="integer">
+			<generator class="native"></generator>
+		</id>
+		<property name="date" column="date" type="java.util.Date"></property>
+		<property name="type" column="type" type="string"></property>
+		<property name="orderCount" column="order_count" type="integer"></property>
+		<property name="handCount" column="hand_count" type="string"></property>
+		<property name="price" column="price" type="string"></property>
+		<property name="stopLoss" column="stop_loss" type="string"></property>
+		<property name="profit" column="profit" type="string"></property>
+		<property name="profitSecond" column="profit_second" type="string"></property>
+		<property name="remainder" column="remainder"></property>
+		<property name="state" column="state" type="integer"></property>
+		<property name="sourceFile" column="source_file" type="string"></property>
+		<property name="currencyPair" column="currency_pair" type="string"></property>
+	</class>
     </hibernate-mapping>
