@@ -19,9 +19,12 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import com.littletool.Constant;
+import com.littletool.bean.DataBean;
 import com.littletool.condition.BaseCondition;
 import com.littletool.condition.ConditionSelector;
 import com.littletool.service.SelectFileService;
@@ -130,7 +133,13 @@ public class SelectFIlePanel extends MainOperationPanel{
 
 	private void init() {
 		window.add(boxUp, BorderLayout.NORTH);
-		window.add(panel, BorderLayout.CENTER);
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setWheelScrollingEnabled(true);
+		scrollPane.setViewportView(panel);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane.setBounds(0, 10, 900, 800);
+		window.getContentPane().add(scrollPane);
+//		window.add(scrollPane, BorderLayout.CENTER);
 		window.add(boxDown,BorderLayout.SOUTH);
 	}
 	
@@ -138,7 +147,11 @@ public class SelectFIlePanel extends MainOperationPanel{
 		for(File file:selectFiles){
 			System.out.println(file.getName());
 			String fileName = file.getName();
+			if(!fileName.contains(".htm")){
+				continue;
+			}
 			Box box = UIHelper.createBox(fileName);
+			
 			Box condition = UIHelper.createBoxH("");
 			condition.add(createBoxSumCondition());
 			condition.add(createBoxSequenceCondition());
@@ -191,6 +204,8 @@ public class SelectFIlePanel extends MainOperationPanel{
 	
 	public static class FileCondition{
 		public File selectedFile;
+		public String textData;
+		public List<DataBean> data;
 		public Box conditionBox;
 	}
 
